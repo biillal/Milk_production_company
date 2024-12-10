@@ -14,6 +14,28 @@ class Cows {
       writeFile(cowsFile,cows)
       return cows
     }
+
+    static updateCow(Cow_number,updateData){
+      let cows = this.getAllCows()
+      const index = cows.findIndex(cow => cow.Cow_number === Cow_number)
+      if(index === -1) return null;
+
+      console.log(index);
+      
+
+      cows[index] = {...cows[index],...updateData}
+      console.log("ad" +cows[index]);
+      
+      writeFile(cowsFile,cows)
+      return cows[index]
+    }
+
+    static deletedCow(Cow_number){
+      let cows = this.getAllCows()
+      const index = cows.filter(cow => cow.Cow_number === Cow_number)
+      if(index === -1) return null
+      return cows[index]
+    }
 }
 
 module.exports = Cows
