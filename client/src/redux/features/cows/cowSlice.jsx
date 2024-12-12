@@ -4,7 +4,7 @@ export const fetchCows = createAsyncThunk(
   "cows/fetchCows",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/cows");
+      const response = await axios.get("https://milk-production-company-1.onrender.com/api/v1/cows");
       return response.data;
     } catch (error) {      
       return rejectWithValue(error.response?.data?.message || "Failed to fetch cows");

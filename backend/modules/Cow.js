@@ -12,7 +12,7 @@ class Cows {
     const cows = this.getAllCows();
     cows.push(newCows);
     writeFile(cowsFile, cows)
-    return cows
+    return {message:"Created successcully"}
   }
 
   static updateCow(Cow_number, updateData) {
