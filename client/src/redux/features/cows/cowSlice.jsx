@@ -13,6 +13,25 @@ export const fetchCows = createAsyncThunk(
   }
 );
 
+// Async thunk to create cow
+export const createCow = createAsyncThunk(
+  "post/create",
+  async (formData, { rejectWithValue }) => {
+    try {
+      console.log(formData);
+      
+      const response = await axios.post("http://localhost:5000/api/v1/cows/add", formData);
+      console.log(response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      
+      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+    }
+  }
+);
+
 
 
 const initialState = {
@@ -27,7 +46,21 @@ const cowSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
+    
+    // create  cow
+    builder.addCase(createCow.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(createCow.fulfilled, (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    });
+    builder.addCase(createCow.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload ;
+    });
+      
     // get All cows
     builder.addCase(fetchCows.pending, (state) => {
       state.loading = true;

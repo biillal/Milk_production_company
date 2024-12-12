@@ -1,11 +1,11 @@
 const { check } = require('express-validator')
-const allowedBreeds = ['الهولشتاين،', 'املونتبليارد'];
+const allowedBreeds = ['الهولشتاين','المونتبليارد'];
 
 
 exports.addCowValidator = [
     check('Date_of_entry')
         .isISO8601()
-        .withMessage('تاريخ الدخول يجب أن يكون بتنسيق صحيح (YYYY-MM-DD)'),
+        .withMessage('تاريخ الدخول يجب أن يكون بتنسيق صحيح (MM-DD-YYYY)'),
 
     check('lineage')
         .isIn(allowedBreeds)
