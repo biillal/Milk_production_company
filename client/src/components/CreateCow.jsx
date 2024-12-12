@@ -24,11 +24,11 @@ const CreateCow = ({ currentcow, closeModal }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg w-96">
                 <h2 className="text-2xl font-bold mb-4">
-                    {currentcow ? 'Update Cow' : 'Create Cow'}
+                    {currentcow ? 'Update Cow' : t('create_cow')}
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label className="block">تاريخ الدخول</label>
+                        <label className="block"> {t('Date_of_entry')} </label>
                         <input
                             type="date"
                             name="entryDate"
@@ -37,7 +37,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
                         />
                     </div>
                     <div>
-                        <label className="block">السلالة</label>
+                        <label className="block">{t('lineage')}</label>
                         <select
                             name="lineage"
                             onChange={(e) => setlineage(e.target.value)}
@@ -59,7 +59,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                         >
-                            {currentcow ? 'Update' : 'Create'}
+                            {currentcow ? t('update_cow') : t('create_cow')}
                         </button>
                     </div>
                 </form>

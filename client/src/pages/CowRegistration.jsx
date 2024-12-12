@@ -116,7 +116,7 @@ const CowRegistration = () => {
               </div>
             ) :
             (
-              <div className="h-[63vh] text-center font-bold text-3xl " >
+              <div className="h-[63vh] text-center font-bold dark:text-white text-3xl " >
                  {t('resultcows')}
               </div>
             )
