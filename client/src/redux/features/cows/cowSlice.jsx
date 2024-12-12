@@ -4,7 +4,7 @@ export const fetchCows = createAsyncThunk(
   "cows/fetchCows",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://milk-production-company-1.onrender.com/api/v1/cows");
+      const response = await axios.get("http://localhost:5000/api/v1/cows");
       return response.data;
     } catch (error) {      
       return rejectWithValue(error.response?.data?.message || "Failed to fetch cows");
@@ -21,6 +21,43 @@ export const createCow = createAsyncThunk(
       console.log(formData);
       
       const response = await axios.post("http://localhost:5000/api/v1/cows/add", formData);
+      console.log(response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      
+      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+    }
+  }
+);
+
+// Async thunk to update cow
+export const updateCow = createAsyncThunk(
+  "update/cow",
+  async ({formData,id}, { rejectWithValue }) => {
+    try {
+      console.log(formData);
+      
+      const response = await axios.put(`http://localhost:5000/api/v1/cows/update/${id}`, formData);
+      console.log(response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      
+      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+    }
+  }
+);
+// Async thunk to delete cow
+export const deleteCow = createAsyncThunk(
+  "delete/cow",
+  async (id, { rejectWithValue }) => {
+    try {
+      console.log(id);
+      
+      const response = await axios.delete(`http://localhost:5000/api/v1/cows/delete/${id}`);
       console.log(response.data);
       
       return response.data;
@@ -57,6 +94,34 @@ const cowSlice = createSlice({
       state.message = action.payload.message;
     });
     builder.addCase(createCow.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload ;
+    });
+      
+    // update  cow
+    builder.addCase(updateCow.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(updateCow.fulfilled, (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    });
+    builder.addCase(updateCow.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload ;
+    });
+      
+    // delete  cow
+    builder.addCase(deleteCow.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(deleteCow.fulfilled, (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    });
+    builder.addCase(deleteCow.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
     });

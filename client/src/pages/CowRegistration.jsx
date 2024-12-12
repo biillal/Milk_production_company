@@ -1,100 +1,131 @@
 import React, { useEffect, useState } from 'react';
-import { MainLayout } from '../components/MainLayout';
-import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCows } from '../redux/features/cows/cowSlice';
+import { deleteCow, fetchCows } from '../redux/features/cows/cowSlice';
+import { useTranslation } from 'react-i18next';
+import { MainLayout } from '../components/MainLayout';
 import { MdDelete } from "react-icons/md";
 import { LiaPaintBrushSolid } from "react-icons/lia";
 import CreateCow from '../components/CreateCow';
-
+const initialProducts = [
+  { id: 1, name: 'Milk', price: '$5.00', category: 'Dairy' },
+  { id: 2, name: 'Cheese', price: '$8.00', category: 'Dairy' },
+  { id: 3, name: 'Butter', price: '$4.50', category: 'Dairy' },
+];
 
 const CowRegistration = () => {
-  const [opneCreate, setOpenCreate] = useState(false)
+  const [products, setProducts] = useState(initialProducts);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentcow, setCurrentcow] = useState(null);
+  const [form, setForm] = useState({ id: null, name: '', price: '', category: '' });
+  const [id, setId] = useState("")
   const { cows } = useSelector((state) => state.cows)
 
   const dispatch = useDispatch()
+  const { message } = useSelector((state) => state.cows)
+  console.log(message);
 
+  useEffect(() => {
+    if (message) {
+      alert(message)
+      window.location.reload()
+    }
+  }, [message])
 
   useEffect(() => {
     dispatch(fetchCows())
-  }, [])
+  }, [dispatch])
 
   const { t } = useTranslation();
 
+
+  const openModal = (cow = null) => {
+    if (cow) {
+      setForm(cow);
+      setCurrentcow(cow);
+    } else {
+      setForm({ id: null, name: '', price: '', category: '' });
+      setCurrentcow(null);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+
+
+
+  const handleDelete = (id) => {
+    dispatch(deleteCow(id))
+  };
+
   return (
     <MainLayout>
+      <div className="p-6 h-auto dark:bg-gray-800">
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('cow_list')}</h1>
+        <button
+          onClick={() => openModal()}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+        >
+          {t('create_cow')}
+        </button>
 
-
-      <div className='dark:bg-gray-800 h-screen  relative '>
-        <div class="relative p-5 w-[100%]  ">
-          <div className='flex justify-between '>
-            <span></span>
-            <h1 className='text-center  text-2xl font-bold dark:text-white'>{t('cow_list')} </h1>
-            <button onClick={() => setOpenCreate(true)} className='text-end dark:bg-white dark:text-gray-800 border p-2 rounded-lg'>{t('create_cow')}</button>
-          </div>
-          <div className="p-6  mt-10 px-0 lg:h-96 h-[600px] mx-auto scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden  ">
-            <table class="w-full min-w-max  table-auto text-left text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" class="px-6 py-3 text-black dark:text-white">
-                    {t('cow_Number')}
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-black dark:text-white">
-                    {t('Date_of_entry')}
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-black dark:text-white">
-                    {t('lineage')}
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-black dark:text-white">
-                    {t('action_update')}
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-black dark:text-white">
-                    {t('action_delete')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  cows.map((cow) => {
-                    return (
-                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap dark:text-white">
-                          {cow.Cow_number}
-                        </th>
-                        <td class="px-6 py-4 text-black dark:text-white">
-                          {cow.Date_of_entry}
-                        </td>
-                        <td class="px-6 py-4 text-black dark:text-white">
-                          {cow.lineage}
-                        </td>
-                        <td class="px-6 py-4 text-black dark:text-white">
-                          < LiaPaintBrushSolid className='hover:border hover:rounded-md cursor-pointer text-2xl' />
-                        </td>
-                        <td class="px-6 py-4 text-black dark:text-white">
-                          <MdDelete className='hover:border hover:rounded-md cursor-pointer text-2xl' />
-                        </td>
-
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </table>
-          </div>
-        </div>
         {
-          opneCreate ?
+          cows.length > 0 ?
             (
-              <CreateCow setOpenCreate={setOpenCreate} />
-            )
-            :
+              <div className="overflow-x-auto ">
+                <table className="min-w-full dark:bg-gray-500 bg-white border rounded-lg">
+                  <thead className="bg-gray-100 dark:bg-gray-900">
+                    <tr>
+                      <th scope="col" class="px-6 py-3 text-black dark:text-white">
+                        {t('cow_Number')}
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-black dark:text-white">
+                        {t('Date_of_entry')}
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-black dark:text-white">
+                        {t('lineage')}
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-black dark:text-white">
+                        {t('action')}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cows.map((cow) => (
+                      <tr key={cow.id} className="border-t">
+                        <td className="p-3 text-center">{cow.Cow_number}</td>
+                        <td className="p-3 text-center">{cow.Date_of_entry}</td>
+                        <td className="p-3 text-center">{cow.lineage}</td>
+                        <td className="p-3 space-x-2 flex justify-center">
+                          < LiaPaintBrushSolid onClick={() => openModal(cow)} className='hover:border hover:rounded-md cursor-pointer text-2xl' />
+                          <button
+                            onClick={() => handleDelete(cow.Cow_number)}
+                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                          >
+                            <MdDelete className='hover:border hover:rounded-md cursor-pointer text-2xl' />
+
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) :
             (
-              <div className=""></div>
+              <div className="h-[63vh] text-center font-bold text-3xl " >
+                 {t('resultcows')}
+              </div>
             )
         }
+
+        {isModalOpen && (
+          <CreateCow currentcow={currentcow} closeModal={closeModal} />
+        )}
       </div>
-
-
     </MainLayout>
   );
 };

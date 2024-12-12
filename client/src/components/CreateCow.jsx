@@ -1,59 +1,68 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCow } from '../redux/features/cows/cowSlice';
+import { createCow, updateCow } from '../redux/features/cows/cowSlice';
 
-const CreateCow = ({ setOpenCreate }) => {
-    const [Date_of_entry,setDate_of_entry] = useState('')
-    const [lineage,setlineage] = useState('الهولشتاين')
+const CreateCow = ({ currentcow, closeModal }) => {
+    const [Date_of_entry, setDate_of_entry] = useState('')
+    const [lineage, setlineage] = useState('الهولشتاين')
     const dispatch = useDispatch()
-    const { message } = useSelector((state) => state.cows)
+    
+    const { t } = useTranslation();
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createCow({Date_of_entry,lineage}))
-    };
-    useEffect(() => {
-        if (message) {
-            alert(message)
-            window.location.reload()
+        if (currentcow) {
+            const formData = {Date_of_entry, lineage }
+            const id = currentcow.Cow_number
+            dispatch(updateCow({formData,id}));
+        } else {
+            dispatch(createCow({ Date_of_entry, lineage }))
         }
-    }, [message])
-    const { t } = useTranslation();
-
+        closeModal();
+    };
     return (
-        <div className='absolute bg-slate-300 dark:bg-gray-800 top-0 left-0 w-[100%] h-screen '>
-            <button onClick={() => setOpenCreate(false)} className='text-end p-5 w-[100%] text-3xl dark:text-white  dark:bg-gray-800'>x</button>
-            <div className="p-8  dark:bg-gray-800 lg:justify-center flex mt-36  w-[100%] dark:text-white  dark:w-[100%] ">
-                <div className="lg:w-[50%] w-[100%]  -mt-36 border rounded-lg p-5 ">
-                    <h2 className="text-2xl font-bold mb-4 text-center">تسجيل البقر</h2>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block">تاريخ الدخول</label>
-                            <input
-                                type="date"
-                                name="entryDate"
-                                onChange={(e)=>setDate_of_entry(e.target.value)}
-                                className="border p-2 dark:text-gray-800 w-full"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block">السلالة</label>
-                            <select
-                                name="lineage"
-                                onChange={(e)=>setlineage(e.target.value)}
-                                className="border p-2 dark:text-gray-800 w-full"
-                            >
-                                <option value="الهولشتاين">الهولشتاين</option>
-                                <option value="المونتبليارد">المونتبليارد</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" className="bg-blue-500 w-[100%] text-white px-4 py-2 rounded">
-                            {t('submitCow')}
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg w-96">
+                <h2 className="text-2xl font-bold mb-4">
+                    {currentcow ? 'Update Cow' : 'Create Cow'}
+                </h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label className="block">تاريخ الدخول</label>
+                        <input
+                            type="date"
+                            name="entryDate"
+                            onChange={(e) => setDate_of_entry(e.target.value)}
+                            className="border p-2 dark:text-gray-800 w-full"
+                        />
+                    </div>
+                    <div>
+                        <label className="block">السلالة</label>
+                        <select
+                            name="lineage"
+                            onChange={(e) => setlineage(e.target.value)}
+                            className="border p-2 dark:text-gray-800 w-full"
+                        >
+                            <option value="الهولشتاين">الهولشتاين</option>
+                            <option value="المونتبليارد">المونتبليارد</option>
+                        </select>
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                        >
+                            Cancel
                         </button>
-                    </form>
-                </div>
+                        <button
+                            type="submit"
+                            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                        >
+                            {currentcow ? 'Update' : 'Create'}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     )
