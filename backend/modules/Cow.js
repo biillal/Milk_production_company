@@ -10,14 +10,15 @@ class Cows {
 
   static addCows(newCows) {
     const cows = this.getAllCows();
+    
     cows.push(newCows);
     writeFile(cowsFile, cows)
     return {message:"Created successcully"}
   }
 
-  static updateCow(Cow_number, updateData) {
+  static updateCow(id, updateData) {
     let cows = this.getAllCows()
-    const index = cows.findIndex(cow => cow.Cow_number === Cow_number)
+    const index = cows.findIndex(cow => cow.id === id)
     if (index === -1) return null;
 
 

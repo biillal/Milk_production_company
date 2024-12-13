@@ -13,16 +13,23 @@ exports.addCow = (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const entries = Cows.getAllCows()
-
-    console.log(Math.max(...entries.map(entry => entry.id)));
-
-    const nextId = entries.length > 0 ? Math.max(...entries.map(entry => entry.Cow_number)) + 1 : 1;
+    const nextId = entries.length > 0 ? Math.max(...entries.map(entry => entry.id)) + 1 : 1;
+    const Cow_number = req.body.Cow_number;
+    const Date_of_entry = req.body.Date_of_entry;
+    const lineage = req.body.lineage;
     const newCow = {
-        Cow_number: nextId,
-        Date_of_entry: req.body.Date_of_entry,
-        lineage: req.body.lineage,
+        id: nextId,
+        Cow_number,
+        Date_of_entry,
+        lineage
     }
-    res.status(201).json(Cows.addCows(newCow))
+    const index = entries.findIndex((cow) => cow.Cow_number === Cow_number);
+    
+    if (index !== -1) {
+        res.status(401).json({message:"Cow number is used"})
+    } else {
+        res.status(201).json(Cows.addCows(newCow))
+    }
 }
 
 exports.update = (req, res) => {
@@ -30,9 +37,9 @@ exports.update = (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const Cow_number = parseInt(req.params.id);
+    const id = parseInt(req.params.id);
     const updateData = req.body
-    const updateCow = Cows.updateCow(Cow_number, updateData)
+    const updateCow = Cows.updateCow(id, updateData)
 
     if (updateCow) {
         res.status(201).json({ updateCow, message: "تم تعديل البقرة بنجاح" });
