@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-export const fetchCows = createAsyncThunk(
-  "cows/fetchCows",
+export const fetchMedicalExams = createAsyncThunk(
+  "medicalExams/fetchMedicalExams",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/cows");
+      const response = await axios.get("http://localhost:5000/api/v1/medicalExam");
       return response.data;
     } catch (error) {      
       return rejectWithValue(error.response?.data?.message || "Failed to fetch cows");
@@ -13,14 +13,33 @@ export const fetchCows = createAsyncThunk(
   }
 );
 
-// Async thunk to create cow
-export const createCow = createAsyncThunk(
-  "post/create",
-  async (formData, { rejectWithValue }) => {
+// Async thunk to create MedicalExam
+export const createMedicalExam = createAsyncThunk(
+  "post/medicalExam",
+  async ({formData,Cow_number}, { rejectWithValue }) => {
     try {
       console.log(formData);
       
-      const response = await axios.post("http://localhost:5000/api/v1/cows/add", formData);
+      const response = await axios.post(`http://localhost:5000/api/v1/medicalExam/cows/${Cow_number}/birth-records`, formData);
+      console.log(response.data);
+      
+      return response.data;
+    } catch (error) {
+        console.log(error);
+              
+      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+    }
+  }
+);
+
+// Async thunk to update MedicalExam
+export const UpdateMedicalExam = createAsyncThunk(
+  "update/medicalExam",
+  async ({formData,id}, { rejectWithValue }) => {
+    try {
+      console.log(formData);
+      
+      const response = await axios.put(`http://localhost:5000/api/v1/medicalExam/update/${id}`, formData);
       console.log(response.data);
       
       return response.data;
@@ -31,32 +50,14 @@ export const createCow = createAsyncThunk(
     }
   }
 );
-
-// Async thunk to update cow
-export const updateCow = createAsyncThunk(
-  "update/cow",
-  async ({formData,id}, { rejectWithValue }) => {
-    try {
-      console.log(formData);
-      
-      const response = await axios.put(`http://localhost:5000/api/v1/cows/update/${id}`, formData);
-      console.log(response.data);
-      
-      return response.data;
-    } catch (error) {
-      
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
-    }
-  }
-);
-// Async thunk to delete cow
-export const deleteCow = createAsyncThunk(
-  "delete/cow",
+// Async thunk to delete MedicalExam
+export const deleteMedicalExam = createAsyncThunk(
+  "delete/medicalExam",
   async (id, { rejectWithValue }) => {
     try {
       console.log(id);
       
-      const response = await axios.delete(`http://localhost:5000/api/v1/cows/delete/${id}`);
+      const response = await axios.delete(`http://localhost:5000/api/v1/medicalExam/delete/${id}`);
       console.log(response.data);
       
       return response.data;
@@ -71,70 +72,70 @@ export const deleteCow = createAsyncThunk(
 
 
 const initialState = {
-  cows: [],
+  medicalExams: [],
   message: "",
   error: "",
   loading:false
 }
 
-const cowSlice = createSlice({
+const medicalExamSlice = createSlice({
   name: 'cows',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     
     // create  cow
-    builder.addCase(createCow.pending, (state) => {
+    builder.addCase(createMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(createCow.fulfilled, (state, action) => {
+    builder.addCase(createMedicalExam.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
     });
-    builder.addCase(createCow.rejected, (state, action) => {
+    builder.addCase(createMedicalExam.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
     });
       
     // update  cow
-    builder.addCase(updateCow.pending, (state) => {
+    builder.addCase(UpdateMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(updateCow.fulfilled, (state, action) => {
+    builder.addCase(UpdateMedicalExam.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
     });
-    builder.addCase(updateCow.rejected, (state, action) => {
+    builder.addCase(UpdateMedicalExam.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
     });
       
     // delete  cow
-    builder.addCase(deleteCow.pending, (state) => {
+    builder.addCase(deleteMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(deleteCow.fulfilled, (state, action) => {
+    builder.addCase(deleteMedicalExam.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
     });
-    builder.addCase(deleteCow.rejected, (state, action) => {
+    builder.addCase(deleteMedicalExam.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
     });
       
     // get All cows
-    builder.addCase(fetchCows.pending, (state) => {
+    builder.addCase(fetchMedicalExams.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(fetchCows.fulfilled, (state, action) => {
+    builder.addCase(fetchMedicalExams.fulfilled, (state, action) => {
       state.loading = false;
-      state.cows = action.payload;
+      state.medicalExams = action.payload;
     });
-    builder.addCase(fetchCows.rejected, (state, action) => {
+    builder.addCase(fetchMedicalExams.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
     });
@@ -142,4 +143,4 @@ const cowSlice = createSlice({
 }
 });
 
-export default cowSlice.reducer;
+export default medicalExamSlice.reducer;

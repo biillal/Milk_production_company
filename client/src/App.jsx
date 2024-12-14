@@ -3,8 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Welcome from './pages/Welcome';
 import CowRegistration from './pages/CowRegistration';
-import MedicalExamination from './pages/MedicalExamination';
 import Births from './pages/Births';
+import { CreateMedicalExam } from './pages/MedicalExam/CreateMedicalExam';
+import MedicalExamination from './pages/MedicalExam/MedicalExamination';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Welcome />} />
           <Route path="/cow-registration" element={<CowRegistration />} />
           <Route path="/medical-exam" element={<MedicalExamination />} />
+          <Route path='/medical-exam/:Cow_number/cows' element={<CreateMedicalExam />} />
           <Route path="/birth-records" element={<Births />} />
         </Routes>
 

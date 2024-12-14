@@ -5,6 +5,7 @@ import { createCow, updateCow } from '../redux/features/cows/cowSlice';
 
 const CreateCow = ({ currentcow, closeModal }) => {
     const [Date_of_entry, setDate_of_entry] = useState('')
+    const [Cow_number, setCow_number] = useState('')
     const [lineage, setlineage] = useState('الهولشتاين')
     const dispatch = useDispatch()
     
@@ -16,7 +17,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
             const id = currentcow.Cow_number
             dispatch(updateCow({formData,id}));
         } else {
-            dispatch(createCow({ Date_of_entry, lineage }))
+            dispatch(createCow({Cow_number, Date_of_entry, lineage }))
         }
         closeModal();
     };
@@ -27,6 +28,15 @@ const CreateCow = ({ currentcow, closeModal }) => {
                     {currentcow ? 'Update Cow' : t('create_cow')}
                 </h2>
                 <form onSubmit={handleSubmit}>
+                    <div>
+                        <label className="block"> {t('cow_Number')} </label>
+                        <input
+                            type="text"
+                            name="Cow_number"
+                            onChange={(e) => setCow_number(e.target.value)}
+                            className="border p-2 dark:text-gray-800 w-full"
+                        />
+                    </div>
                     <div>
                         <label className="block"> {t('Date_of_entry')} </label>
                         <input
