@@ -50,9 +50,9 @@ exports.update = (req, res) => {
 }
 
 exports.deleted = (req, res) => {
-    const Cow_number = parseInt(req.params.id);
+    const id = parseInt(req.params.id);
 
-    const isDeleted = Cows.deletedCow(Cow_number);
+    const isDeleted = Cows.deletedCow(id);
 
     if (isDeleted) {
         res.status(200).json({ message: "تم حذف البقرة بنجاح" });

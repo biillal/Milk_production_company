@@ -28,10 +28,10 @@ class Cows {
     return cows[index]
   }
 
-  static deletedCow(Cow_number) {
+  static deletedCow(id) {
     let cows = this.getAllCows();
 
-    const newCows = cows.filter(cow => cow.Cow_number !== Cow_number);
+    const newCows = cows.filter(cow => cow.id !== id);
 
     if (cows.length === newCows.length) {
       return false;
