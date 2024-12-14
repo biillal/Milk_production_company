@@ -30,12 +30,7 @@ class medicalExamination {
 
     static deletedMedicalExam(id) {
         let MedicalExams = this.getAllmedicalExamination();
-console.log(MedicalExams);
-
         const newMedicalExam = MedicalExams.filter(exams => exams.id != id);
-console.log(MedicalExams.length);
-console.log(newMedicalExam.length);
-
         if (MedicalExams.length === newMedicalExam.length) {
             return false;
         }
