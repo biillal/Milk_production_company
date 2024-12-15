@@ -6,6 +6,7 @@ import CowRegistration from './pages/CowRegistration';
 import Births from './pages/Births';
 import { CreateMedicalExam } from './pages/MedicalExam/CreateMedicalExam';
 import MedicalExamination from './pages/MedicalExam/MedicalExamination';
+import MilkProduction from './pages/MilkProduction';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/medical-exam" element={<MedicalExamination />} />
           <Route path='/medical-exam/:Cow_number/cows' element={<CreateMedicalExam />} />
           <Route path="/birth-records" element={<Births />} />
+          <Route path="/milk-production" element={<MilkProduction />} />
         </Routes>
 
       </Router>
