@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/api/v1/cows',require('./routers/cowRouter'))
 app.use('/api/v1/medicalExam',require('./routers/medicalExaminationRouter'))
 app.use('/api/v1/birthRecord',require('./routers/birthRecordRouter'))
+app.use('/api/v1/milk-production', require('./routers/milkProductionRoutes'));
 
 
 app.listen(port, () => {
