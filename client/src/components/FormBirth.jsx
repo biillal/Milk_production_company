@@ -3,10 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCow, updateCow } from '../redux/features/cows/cowSlice';
 import { createbirth, Updatebirth } from '../redux/features/birth/birthSlice';
+import { PulseLoader } from 'react-spinners';
 
 export const FormBirth = ({currentcow,closeModal}) => {
     const [date, setdate] = useState(currentcow ? currentcow.date : "")
     const [Cow_number, setCow_number] = useState(currentcow ? currentcow.Cow_number : "")
+    const { loading } = useSelector((state) => state.births)
+
     const dispatch = useDispatch()
     
     const { t } = useTranslation();
@@ -62,7 +65,7 @@ export const FormBirth = ({currentcow,closeModal}) => {
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                         >
-                            {currentcow ? t('update_cow') : t('create_cow')}
+                            {loading ? <PulseLoader color="#B8B8B8" loading={true} size={15} /> : currentcow ? t('update_cow') : t('create_cow')}
                         </button>
                     </div>
                 </form>

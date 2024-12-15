@@ -20,17 +20,7 @@ const MedicalExamination = () => {
   useEffect(() => {
     dispatch(fetchMedicalExams())
   }, [dispatch])
-  console.log(error);
 
-  useEffect(() => {
-    if (message) {
-      alert(message)
-      window.location.reload()
-    }
-    if (error) {
-      alert(error)
-    }
-  }, [message, error])
 
   const { t } = useTranslation();
   const handleDelete = (id) => {

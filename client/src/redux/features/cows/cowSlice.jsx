@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { toast } from 'react-toastify';
+
 export const fetchCows = createAsyncThunk(
   "cows/fetchCows",
   async (_, { rejectWithValue }) => {
@@ -18,16 +20,11 @@ export const createCow = createAsyncThunk(
   "post/create",
   async (formData, { rejectWithValue }) => {
     try {
-      console.log(formData);
-      
       const response = await axios.post("http://localhost:5000/api/v1/cows/add", formData);
-      console.log(response.data);
-      
       return response.data;
     } catch (error) {
-      console.log(error);
       
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+      return rejectWithValue(error.response?.data?.errors[0].msg || "Failed to create cows");
     }
   }
 );
@@ -36,16 +33,13 @@ export const createCow = createAsyncThunk(
 export const updateCow = createAsyncThunk(
   "update/cow",
   async ({formData,id}, { rejectWithValue }) => {
-    try {
-      console.log(formData);
-      
+    try { 
       const response = await axios.put(`http://localhost:5000/api/v1/cows/update/${id}`, formData);
-      console.log(response.data);
       
       return response.data;
     } catch (error) {
       
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+      return rejectWithValue(error.response?.data?.errors[0].msg || "Failed to create cows");
     }
   }
 );
@@ -54,15 +48,10 @@ export const deleteCow = createAsyncThunk(
   "delete/cow",
   async (id, { rejectWithValue }) => {
     try {
-      console.log(id);
-      
+
       const response = await axios.delete(`http://localhost:5000/api/v1/cows/delete/${id}`);
-      console.log(response.data);
-      
       return response.data;
     } catch (error) {
-      console.log(error);
-      
       return rejectWithValue(error.response?.data?.message || "Failed to create cows");
     }
   }
@@ -91,11 +80,18 @@ const cowSlice = createSlice({
     builder.addCase(createCow.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(createCow.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
-      console.log(action.payload);
+      toast.error(action.payload, {
+        position: "top-center",
+        autoClose: 3000,
+      });
       
     });
       
@@ -107,10 +103,18 @@ const cowSlice = createSlice({
     builder.addCase(updateCow.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(updateCow.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
+      toast.error(action.payload, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
       
     // delete  cow
@@ -121,6 +125,10 @@ const cowSlice = createSlice({
     builder.addCase(deleteCow.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(deleteCow.rejected, (state, action) => {
       state.loading = false;

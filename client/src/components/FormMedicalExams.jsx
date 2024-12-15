@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { UpdateMedicalExam } from '../redux/features/medicalExams/examsSlice'
+import { useNavigate } from 'react-router-dom'
 
 const FormMedicalExams = ({ closeModal ,currentmedicalExam }) => {
     const [date, setdate] = useState(currentmedicalExam.date)
@@ -11,7 +12,8 @@ const FormMedicalExams = ({ closeModal ,currentmedicalExam }) => {
     const { error,message } = useSelector((state) => state.medicalExams)
     const { t } = useTranslation()
     console.log(error);
-    
+ 
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const formData = { disease, date ,Cow_number}
@@ -19,7 +21,7 @@ const FormMedicalExams = ({ closeModal ,currentmedicalExam }) => {
         dispatch(UpdateMedicalExam({ formData,id  }))
     }
 
-    
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">

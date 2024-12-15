@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { toast } from 'react-toastify';
+
 export const fetchMilkProduction = createAsyncThunk(
   "milkProduction/fetchMilkProduction",
   async (_, { rejectWithValue }) => {
@@ -17,17 +19,12 @@ export const fetchMilkProduction = createAsyncThunk(
 export const createMilkProduction = createAsyncThunk(
   "post/create",
   async (formData, { rejectWithValue }) => {
-    try {
-      console.log(formData);
-      
+    try {      
       const response = await axios.post("http://localhost:5000/api/v1/milk-production/add", formData);
-      console.log(response.data);
       
       return response.data;
-    } catch (error) {
-      console.log(error);
-      
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+    } catch (error) {      
+      return rejectWithValue(error.response?.data?.errors[0].msg || "Failed to create cows");
     }
   }
 );
@@ -37,15 +34,11 @@ export const updateMilkProduction = createAsyncThunk(
   "update/milkProduction",
   async ({formData,id}, { rejectWithValue }) => {
     try {
-      console.log(formData);
-      
       const response = await axios.put(`http://localhost:5000/api/v1/milk-production/update/${id}`, formData);
-      console.log(response.data);
       
       return response.data;
     } catch (error) {
-      
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+      return rejectWithValue(error.response?.data?.errors[0].msg || "Failed to create cows");
     }
   }
 );
@@ -54,15 +47,10 @@ export const deleteMilkProduction = createAsyncThunk(
   "delete/milkProduction",
   async (id, { rejectWithValue }) => {
     try {
-      console.log(id);
-      
       const response = await axios.delete(`http://localhost:5000/api/v1/milk-production/delete/${id}`);
-      console.log(response.data);
       
       return response.data;
     } catch (error) {
-      console.log(error);
-      
       return rejectWithValue(error.response?.data?.message || "Failed to create cows");
     }
   }
@@ -78,7 +66,7 @@ const initialState = {
 }
 
 const milkProductionSlice = createSlice({
-  name: 'cows',
+  name: 'milkProduction',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -91,10 +79,18 @@ const milkProductionSlice = createSlice({
     builder.addCase(createMilkProduction.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(createMilkProduction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
+      toast.error(action.payload, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
       
     // update  MilkProduction
@@ -105,10 +101,18 @@ const milkProductionSlice = createSlice({
     builder.addCase(updateMilkProduction.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(updateMilkProduction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
+      toast.error(action.payload, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
       
     // delete  MilkProduction
@@ -119,10 +123,18 @@ const milkProductionSlice = createSlice({
     builder.addCase(deleteMilkProduction.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      toast.success(action.payload.message, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
     builder.addCase(deleteMilkProduction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
+      toast.error(action.payload, {
+        position: "top-center",
+        autoClose: 3000,
+      });
     });
       
     // get All cows

@@ -8,28 +8,22 @@ import { GoMoveToEnd } from "react-icons/go";
 import { LiaPaintBrushSolid } from "react-icons/lia";
 import CreateCow from '../components/CreateCow';
 import { Link } from 'react-router-dom';
-import { fetchbirth } from '../redux/features/birth/birthSlice';
+import { deletebirth, fetchbirth } from '../redux/features/birth/birthSlice';
 import { FormBirth } from '../components/FormBirth';
 
 
 const Births = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentcow, setCurrentcow] = useState(null);
-  const { births } = useSelector((state) => state.births)
 
   const dispatch = useDispatch()
-  const { message, error } = useSelector((state) => state.births)
-  console.log(error);
+  const { message,births } = useSelector((state) => state.births)
 
   useEffect(() => {
     if (message) {
-      alert(message)
       window.location.reload()
     }
-    if (error) {
-      alert(error)
-    }
-  }, [message, error])
+  }, [message])
 
   useEffect(() => {
     dispatch(fetchbirth())

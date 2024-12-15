@@ -7,10 +7,12 @@ import Births from './pages/Births';
 import { CreateMedicalExam } from './pages/MedicalExam/CreateMedicalExam';
 import MedicalExamination from './pages/MedicalExam/MedicalExamination';
 import MilkProduction from './pages/MilkProduction';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return (
     <div className=" ">
+       <ToastContainer />
       <Router>
         <Routes>
           <Route path="/" element={<Welcome />} />

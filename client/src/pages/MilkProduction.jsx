@@ -15,19 +15,15 @@ import FormMilkProduction from '../components/FormMilkProduction';
 const MilkProduction = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentmilk, setCurrentmilk] = useState(null);
-  const { milkProductions,message,error } = useSelector((state) => state.milkProductions)
+  const { milkProductions,message } = useSelector((state) => state.milkProductions)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (message) {
-      alert(message)
       window.location.reload()
     }
-    if (error) {
-      alert(error)
-    }
-  }, [message,error])
+  }, [message])
 
   useEffect(() => {
     dispatch(fetchMilkProduction())

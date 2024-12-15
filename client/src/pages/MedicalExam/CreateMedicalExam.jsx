@@ -4,27 +4,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMedicalExam } from '../../redux/features/medicalExams/examsSlice';
+import { PulseLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 export const CreateMedicalExam = () => {
     const [date, setdate] = useState('')
     const [disease, setdisease] = useState('')
     const dispatch = useDispatch()
-    const {message,error} = useSelector((state)=>state.medicalExams)
+    const {message,error,loading} = useSelector((state)=>state.medicalExams)
     const { Cow_number } = useParams();
     const { t } = useTranslation()
     const navigate = useNavigate()
+
     const handleSubmit = (e)=>{
         e.preventDefault()
         const formData = {disease,date}
-        dispatch(createMedicalExam({formData,Cow_number}))
+        dispatch(createMedicalExam({formData,Cow_number,navigate,toast}))
     }
 
-   useEffect(()=>{
-    if(message){
-        alert(message)
-        navigate('/medical-exam')
-    }
-   },[message,error])
     return (
         <MainLayout>
             <div className="flex justify-center dark:bg-gray-800 h-screen m-0 p-0 ">
@@ -40,7 +37,7 @@ export const CreateMedicalExam = () => {
                             <input type="text" className="border p-2 w-full" onChange={(e)=>setdisease(e.target.value)} />
                         </div>
                         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                            إضافة الفحص
+                            {loading ? <PulseLoader color="#B8B8B8" loading={true} size={15} /> : t('button_exam') }
                         </button>
                     </form>
                 </div>

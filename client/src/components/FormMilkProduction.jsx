@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCow, updateCow } from '../redux/features/cows/cowSlice';
 import { createMilkProduction, updateMilkProduction } from '../redux/features/milkProduction/milkProdutionSlice';
+import { PulseLoader } from 'react-spinners';
 
 const FormMilkProduction = ({ currentmilk, closeModal }) => {
     const [date, setdate] = useState(currentmilk ? currentmilk.date : "")
     const [milkAmount, setmilkAmount] = useState(currentmilk ? currentmilk.milkAmount : "")
     const dispatch = useDispatch()
+    const { loading } = useSelector((state) => state.milkProductions)
 
     const { t } = useTranslation();
     const handleSubmit = (e) => {
@@ -60,7 +61,7 @@ const FormMilkProduction = ({ currentmilk, closeModal }) => {
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                         >
-                            {currentmilk ? t('update_milk') : t('create_milk')}
+                            {loading ? <PulseLoader color="#B8B8B8" loading={true} size={15} />  :currentmilk ? t('update_milk') : t('create_milk')}
                         </button>
                     </div>
                 </form>

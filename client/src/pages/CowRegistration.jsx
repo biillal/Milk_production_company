@@ -13,22 +13,17 @@ import { Link } from 'react-router-dom';
 const CowRegistration = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentcow, setCurrentcow] = useState(null);
-  const [form, setForm] = useState({ id: null, name: '', price: '', category: '' });
-  const [id, setId] = useState("")
   const { cows } = useSelector((state) => state.cows)
 
   const dispatch = useDispatch()
-  const { message,error } = useSelector((state) => state.cows)
+  const { message } = useSelector((state) => state.cows)
 
   useEffect(() => {
     if (message) {
-      alert(message)
       window.location.reload()
     }
-    if (error) {
-      alert(error)
-    }
-  }, [message,error])
+
+  }, [message])
 
   useEffect(() => {
     dispatch(fetchCows())
