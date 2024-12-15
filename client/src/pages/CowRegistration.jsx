@@ -8,11 +8,7 @@ import { GoMoveToEnd } from "react-icons/go";
 import { LiaPaintBrushSolid } from "react-icons/lia";
 import CreateCow from '../components/CreateCow';
 import { Link } from 'react-router-dom';
-const initialProducts = [
-  { id: 1, name: 'Milk', price: '$5.00', category: 'Dairy' },
-  { id: 2, name: 'Cheese', price: '$8.00', category: 'Dairy' },
-  { id: 3, name: 'Butter', price: '$4.50', category: 'Dairy' },
-];
+
 
 const CowRegistration = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
