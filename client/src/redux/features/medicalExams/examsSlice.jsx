@@ -27,7 +27,7 @@ export const createMedicalExam = createAsyncThunk(
     } catch (error) {
         console.log(error);
               
-      return rejectWithValue(error.response?.data?.message || "Failed to create cows");
+      return rejectWithValue(error.response?.data?.errors[0].msg || "Failed to create cows");
     }
   }
 );
@@ -79,12 +79,12 @@ const initialState = {
 }
 
 const medicalExamSlice = createSlice({
-  name: 'cows',
+  name: 'medicalExams',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     
-    // create  cow
+    // create  medical 
     builder.addCase(createMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -98,7 +98,7 @@ const medicalExamSlice = createSlice({
       state.error = action.payload ;
     });
       
-    // update  cow
+    // update  medical
     builder.addCase(UpdateMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -112,7 +112,7 @@ const medicalExamSlice = createSlice({
       state.error = action.payload ;
     });
       
-    // delete  cow
+    // delete  medical
     builder.addCase(deleteMedicalExam.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -126,7 +126,7 @@ const medicalExamSlice = createSlice({
       state.error = action.payload ;
     });
       
-    // get All cows
+    // get All medicals
     builder.addCase(fetchMedicalExams.pending, (state) => {
       state.loading = true;
       state.error = null;

@@ -19,7 +19,6 @@ const CowRegistration = () => {
 
   const dispatch = useDispatch()
   const { message,error } = useSelector((state) => state.cows)
-  console.log(error);
 
   useEffect(() => {
     if (message) {

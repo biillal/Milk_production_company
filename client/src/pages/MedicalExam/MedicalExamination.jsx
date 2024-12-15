@@ -12,6 +12,7 @@ import FormMedicalExams from '../../components/FormMedicalExams';
 
 const MedicalExamination = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentmedicalExam, setCurrentmedicalExam] = useState(null);
   const dispatch = useDispatch()
   const { medicalExams, message, error } = useSelector((state) => state.medicalExams)
 
@@ -19,7 +20,7 @@ const MedicalExamination = () => {
   useEffect(() => {
     dispatch(fetchMedicalExams())
   }, [dispatch])
-
+  console.log(error);
 
   useEffect(() => {
     if (message) {
@@ -36,7 +37,12 @@ const MedicalExamination = () => {
     dispatch(deleteMedicalExam(id))
   };
 
-  const openModal = () => {
+  const openModal = (exam) => {
+    if (exam) {
+      setCurrentmedicalExam(exam);
+    } else {
+      setCurrentmedicalExam(null);
+    }
     setIsModalOpen(true);
   };
 
@@ -85,9 +91,6 @@ const MedicalExamination = () => {
 
                           </button>
                         </td>
-                        {isModalOpen && (
-                          <FormMedicalExams closeModal={closeModal} exam={exam} />
-                        )}
                       </tr>
 
                     ))}
@@ -102,8 +105,9 @@ const MedicalExamination = () => {
               </div>
             )
         }
-
-
+        {isModalOpen && (
+          <FormMedicalExams closeModal={closeModal} currentmedicalExam={currentmedicalExam}  />
+        )}
       </div>
     </MainLayout>
   )

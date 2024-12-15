@@ -4,20 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCow, updateCow } from '../redux/features/cows/cowSlice';
 
 const CreateCow = ({ currentcow, closeModal }) => {
-    const [Date_of_entry, setDate_of_entry] = useState('')
-    const [Cow_number, setCow_number] = useState('')
-    const [lineage, setlineage] = useState('الهولشتاين')
+    const [Date_of_entry, setDate_of_entry] = useState(currentcow ? currentcow.Date_of_entry : "")
+    const [Cow_number, setCow_number] = useState(currentcow ? currentcow.Cow_number : "")
+    const [lineage, setlineage] = useState(currentcow ? currentcow.lineage : "")
     const dispatch = useDispatch()
-    
+
     const { t } = useTranslation();
     const handleSubmit = (e) => {
         e.preventDefault();
         if (currentcow) {
-            const formData = {Date_of_entry, lineage }
+            const formData = { Date_of_entry, lineage }
             const id = currentcow.Cow_number
-            dispatch(updateCow({formData,id}));
+            dispatch(updateCow({ formData, id }));
         } else {
-            dispatch(createCow({Cow_number, Date_of_entry, lineage }))
+            dispatch(createCow({ Cow_number, Date_of_entry, lineage }))
         }
         closeModal();
     };
@@ -33,6 +33,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
                         <input
                             type="text"
                             name="Cow_number"
+                            defaultValue={currentcow ? currentcow.Cow_number : ""}
                             onChange={(e) => setCow_number(e.target.value)}
                             className="border p-2 dark:text-gray-800 w-full"
                         />
@@ -42,6 +43,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
                         <input
                             type="date"
                             name="entryDate"
+                            defaultValue={currentcow ? currentcow.Date_of_entry : ""}
                             onChange={(e) => setDate_of_entry(e.target.value)}
                             className="border p-2 dark:text-gray-800 w-full"
                         />
@@ -51,6 +53,7 @@ const CreateCow = ({ currentcow, closeModal }) => {
                         <select
                             name="lineage"
                             onChange={(e) => setlineage(e.target.value)}
+                            defaultValue={currentcow ? currentcow.lineage : ""}
                             className="border p-2 dark:text-gray-800 w-full"
                         >
                             <option value="الهولشتاين">الهولشتاين</option>

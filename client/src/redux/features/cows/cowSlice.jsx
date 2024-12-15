@@ -95,6 +95,8 @@ const cowSlice = createSlice({
     builder.addCase(createCow.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload ;
+      console.log(action.payload);
+      
     });
       
     // update  cow

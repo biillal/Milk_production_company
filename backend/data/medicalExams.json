@@ -1,14 +1,8 @@
 [
   {
-    "id": 1,
-    "Cow_number": 104,
-    "date": "2024-12-05",
-    "disease": "حمئ"
-  },
-  {
-    "id": 2,
-    "Cow_number": "102",
-    "date": "2024-12-20",
-    "disease": "AA"
+    "id": 4,
+    "Cow_number": 102,
+    "date": "2024-12-06",
+    "disease": "ad"
   }
 ]
