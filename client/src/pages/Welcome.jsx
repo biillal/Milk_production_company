@@ -16,9 +16,7 @@ const Welcome = () => {
         <div className='text-xl font-semibold '>
           {t('title')}
         </div>
-        <Link to='/content' className='border p-1 text-xl rounded-lg font-bold bg-gray-800 dark:bg-white text-white dark:text-black w-[120px] text-center '>
-          {t('buttonWelcome')}
-        </Link>
+
       </div>
     </MainLayout>
   );
